@@ -9,21 +9,22 @@ public class foodEntry {
     String calories;
     String fat;
     String protein;
-    //byte [] picture;
+    byte [] picture;
 
-    public foodEntry(){
-        this.name = null;
-        this.calories = null;
-        this.fat = null;
-        this.protein = null;
-    }
-
-    public foodEntry(String name, String calories, String fat, String protein){
+    public foodEntry(String name, String calories, String fat, String protein, byte[] picture){
         this.name = name;
         this.calories = calories;
         this.fat = fat;
         this.protein = protein;
-        //this.picture = picture;
+        this.picture = picture;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 
     public String getName() {

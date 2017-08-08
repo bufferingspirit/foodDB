@@ -15,13 +15,14 @@ import static android.R.attr.id;
 public class DatabaseHelper extends SQLiteOpenHelper{
 
     private static final String DATABASE_NAME = "MyDatabase";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public static final String TABLE_NAME = "Foods";
     public static final String FOOD_NAME = "Name";
     public static final String FOOD_CALORIES = "Calories";
     public static final String FOOD_FAT = "Fat";
     public static final String FOOD_PROTEIN = "Protein";
+    public static final String FOOD_IMAGE = "Picture";
     //put picture here
     public static final String TAG = "DatabaseHelper";
 
@@ -35,7 +36,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 FOOD_NAME + " TEXT PRIMARY KEY," +
                 FOOD_CALORIES + " TEXT, " +
                 FOOD_FAT + " TEXT," +
-                FOOD_PROTEIN  + " TEXT" +
+                FOOD_PROTEIN  + " TEXT," +
+                FOOD_IMAGE + " BLOB" +
                 ")";
         sqLiteDatabase.execSQL(CREATE_TABLE);
     }
@@ -55,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         contentValues.put(FOOD_CALORIES, entry.getCalories());
         contentValues.put(FOOD_FAT, entry.getFat());
         contentValues.put(FOOD_PROTEIN, entry.getProtein());
+        contentValues.put(FOOD_IMAGE, entry.getPicture());
         long saved = database.insert(TABLE_NAME, null, contentValues);
         Log.d(TAG, "saveNewFoodEntry: ");
         return saved;
@@ -80,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         cv.put(FOOD_CALORIES, entry.getCalories());
         cv.put(FOOD_FAT, entry.getFat());
         cv.put(FOOD_PROTEIN, entry.getProtein());
-        //picture here
+        cv.put(FOOD_IMAGE, entry.getPicture());
         db.update(TABLE_NAME, cv, FOOD_NAME + " = '" + entry.getName() + "'", null);
         return true;
     }
@@ -98,7 +101,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         Cursor cursor = database.rawQuery(query, null);
         if(cursor.moveToFirst()){
             do{
-                foodEntry entry = new foodEntry(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3));
+                foodEntry entry = new foodEntry(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getBlob(4));
                 entryList.add(entry);
             }while(cursor.moveToNext());
         }
@@ -109,10 +112,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         //THIS IS A POTENTIAL LEAK
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + FOOD_NAME + " = '" + name + "'";
-        foodEntry entry = new foodEntry();
 
         Cursor cursor = db.rawQuery(query,null);
         cursor.moveToFirst();
-        return new foodEntry(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3));
+        return new foodEntry(cursor.getString(0),cursor.getString(1),cursor.getString(2),cursor.getString(3), cursor.getBlob(4));
     }
 }

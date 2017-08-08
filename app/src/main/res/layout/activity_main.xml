@@ -40,27 +40,41 @@
         android:id="@+id/protein"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:id="@+id/picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <Button
         android:id="@+id/saveData"
         android:text="Save Data"
         android:onClick="saveEntry"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
         android:id="@+id/getData"
         android:text="Get Data"
         android:onClick="getEntry"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
         android:text="View Data"
         android:id="@+id/viewData"
         android:onClick="switchView"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
     <Button
         android:text="Delete Data"
         android:onClick="deleteEntry"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:text="Take Photo"
+        android:layout_weight="1"
+        android:onClick="takePicture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
