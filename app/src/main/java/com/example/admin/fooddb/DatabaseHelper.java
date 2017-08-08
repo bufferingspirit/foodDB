@@ -60,6 +60,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return saved;
     }
 
+    public boolean checkIfEntryExits(String name) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String Query = "SELECT * FROM " + TABLE_NAME + " WHERE " + FOOD_NAME + " = '" + name + "'";
+        Cursor cursor = db.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
     public boolean updateEntry(foodEntry entry) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -69,13 +81,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         cv.put(FOOD_FAT, entry.getFat());
         cv.put(FOOD_PROTEIN, entry.getProtein());
         //picture here
-        db.update(TABLE_NAME, cv, entry.getName() + " = ?", null);
+        db.update(TABLE_NAME, cv, FOOD_NAME + " = '" + entry.getName() + "'", null);
         return true;
     }
 
     public Integer deleteEntry(String name){
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, name + " =?", null);
+        return db.delete(TABLE_NAME, FOOD_NAME + " = '" + name + "'" , null);
     }
 
     public ArrayList<foodEntry> getEntries(){

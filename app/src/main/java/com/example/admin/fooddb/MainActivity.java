@@ -38,27 +38,34 @@ public class MainActivity extends AppCompatActivity {
         foodEntry entry = new foodEntry(nameString, calorieString, fatString, proteinString);
 
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        long saved = databaseHelper.saveNewFoodEntry(entry);
-        if(saved == -1){
-            Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(this, "Successfully saved!!!", Toast.LENGTH_SHORT).show();
-
+        if(databaseHelper.checkIfEntryExits(nameString)){
+            databaseHelper.updateEntry(entry);
         }
-
+        else {
+            long saved = databaseHelper.saveNewFoodEntry(entry);
+            if (saved == -1) {
+                Toast.makeText(this, "FAILED", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Successfully saved!!!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public void getEntry(View view) {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        foodEntry entry = databaseHelper.getEntry(name.getText().toString());
-        calories.setText(entry.getCalories());
-        fat.setText(entry.getFat());
-        protein.setText(entry.getProtein());
+        if(databaseHelper.checkIfEntryExits(name.getText().toString())){
+            foodEntry entry = databaseHelper.getEntry(name.getText().toString());
+            calories.setText(entry.getCalories());
+            fat.setText(entry.getFat());
+            protein.setText(entry.getProtein());
+        }
+        else{Toast.makeText(this, "ENTRY DOES NOT EXIST", Toast.LENGTH_SHORT).show();}
     }
 
     public void deleteEntry(View view){
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        databaseHelper.deleteEntry(name.getText().toString());
+        if(databaseHelper.checkIfEntryExits(name.getText().toString()))
+            databaseHelper.deleteEntry(name.getText().toString());
     }
 
     public void switchView(View view){
