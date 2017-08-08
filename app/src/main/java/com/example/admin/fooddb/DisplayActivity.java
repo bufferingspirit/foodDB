@@ -22,7 +22,6 @@ public class DisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display);
         ArrayList names = new ArrayList<String>();
         populateNameList(names);
-        //List<String> test = new ArrayList<String>();
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_entry, names);
         lv = (ListView) findViewById(R.id.food_list);
